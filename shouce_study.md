@@ -471,10 +471,409 @@ $("button").click(function(){
 });
 
 ####筛选
-eq(index|-index)
+#eq(index|-index)
 获取第N个元素
 index:一个整数，表示元素基于0的位置
--index:一个整数，表示元素的位置，从集合中的最后一个元素开始倒数
+-index:一个整数，表示元素的位置，从集合中的最后一个元素开始倒数,从1算起
+$("p").eq(1).css("color","red");
+$("p").eq(-2).css("color","red");
+
+#first() 获取第一个元素 
+$("li").first().css("background","yellow");
+
+#last() 获取最后一个元素
+  $("ul li").last().css("color","orange");
+
+#hasClass(class) 返回值:Boolean
+ $("div").click(function(){
+      if ($(this).hasClass("protected")){
+        $(this)
+          .animate({ "left": "-10px" })
+          .animate({ "left": "10px" })
+          .animate({ "left": "-10px" })
+          .animate({ "left": "10px" })
+          .animate({ "left": 0 });
+    }
+  });
+
+#filter(expr|obj|ele|fn) 返回值:jQuery
+筛选出与指定表达式匹配的元素集合。这个方法用于缩小匹配的范围。用逗号分隔多个表达式
+  $("p").filter(".selected").css("background-color","orange");
+  $("p").filter(".selected, :first").css("background","#333333");//保留第一个或带有selected类的元素
+  $("p").filter(function(index) {
+    return $("ol", this).length == 0;
+  });//保留子元素中不包含ol的元素
+  $("p","ul li").filter(":first ").css("background","#dcd");//在ul li下选择p来匹配
+
+#is(expr|obj|ele|fn) 返回值:Boolean
+根据选择器、DOM元素或 jQuery 对象来检测匹配元素集合，如果其中至少有一个元素符合这个给定的表达式就返回true。
+  alert($("input[type='checkbox']").parent().is("form"));
+
+$("ul li").click(function(){
+    if($(this).is(function(){ return $("strong",this).length==2})){
+      $(this).css("background","blue");
+    }else if($(this).is(function(){ return $("strong",this).length==1})){
+      $(this).css("background","red");
+
+    }
+  });
+
+#map(callback) 返回值:jQuery
+将一组元素转换成其他数组（不论是否是元素数组）
+你可以用这个函数来建立一个列表，不论是值、属性还是CSS样式，或者其他特别形式。这都可以用'$.map()'来方便的建立。
+$("p b").append($("input").map(function(){
+    return $(this).val();
+  }).get().join(","));
+
+  alert($("input").map(function(){
+    return $(this).val();
+  }).get());//得到数组
+
+#has(expr|ele)
+保留包含特定后代的元素，去掉那些不含有指定后代的元素。
+$('li').has('ul').css('background-color', 'red');
+  $("p").has("span").css("background-color","#dcdcdc");
+
+#not(expr|ele|fn) 返回值:jQuery
+删除与指定表达式匹配的元素
+$("p").not($("#selected")[0])
+
+#slice(start, [end]) 选取一个匹配的子集  与原来的slice方法类似
+  $("p").slice(0, 1).wrapInner("<b></b>");//选取第一个P元素
+  $("p").slice(-1).wrapInner("<b></b>");//选取最后一个P元素
+  $("p").slice(0, 2).wrapInner("<b></b>");//选取前两个P元素
+  $("p").slice(1, 2).wrapInner("<b></b>");//只选取第二个P元素
+  $("p").slice(1).wrapInner("<b></b>");//选取第二个P元素之后的所有p元素
+  $("p").slice(-1).wrapInner("<b></b>");//选取最后一个P元素
+
+#children([expr])
+得一个包含匹配的元素集合中每一个元素的所有子元素的元素集合。
+可以通过可选的表达式来过滤所匹配的子元素。注意：parents()将查找所有祖辈元素，而children()只考虑子元素而不考虑所有后代元素。
+$("div").children()
+  $("div").children("span").css("color","blue");//仅接受表达式，jQuery对象不可以
+  $("div").children().css("color","yellow");
+
+#closest(expr,[con]|obj|ele)
+从元素本身开始，逐级向上级元素匹配，并返回最先匹配的元素。注意：closest会首先检查当前元素是否匹配，如果匹配则直接返回元素本身。如果不匹配则向上查找父元素，一层一层往上，直到找到匹配选择器的元素。如果什么都没找到则返回一个空的jQuery对象。
+closest和parents的主要区别是：
+  1，前者从当前元素开始匹配寻找，后者从父元素开始匹配寻找；
+  2，前者逐级向上查找，直到发现匹配的元素后就停止了，后者一直向上查找直到根元素，然后把这些元素放进一个临时集合中，再用给定的选择器表达式去过滤；
+  3，前者返回0或1个元素，后者可能包含0个，1个，或者多个元素。 
+
+$("li:first").closest(["ul", "body"]);//传递数组字符串可以查找多个元素
+
+#ind(expr|obj|ele)
+搜索所有与指定表达式匹配的元素。这个函数是找出正在处理的元素的后代元素的好方法，所有搜索都依靠jQuery表达式来完成。这个表达式可以使用CSS1-3的选择器语法来写。
+$("p").find("span");这等价于$("p span")
+
+#next([expr])
+取得一个包含匹配的元素集合中每一个元素紧邻的后面同辈元素的元素集合。
+这个函数只返回后面那个紧邻的同辈元素，而不是后面所有的同辈元素（可以使用nextAll）。可以用一个可选的表达式进行筛选。
+  $("div").next().css("color","red");
+  $("div").next(".pp").css("color","red");//选择div紧跟后面的p元素且该元素带有pp类
+
+#nextAll([expr]) 查找当前元素之后所有的同辈元素，可以使用表达式过滤
+  $("div").nextAll().css("color","red");
+  $("div").nextAll("span").css("background-color","red");
+
+#nextUntil([exp|ele][,fil])
+查找当前元素之后所有的同辈元素，直到遇到匹配的那个元素为止。
+这个新jQuery对象里包含了下面所有找到的同辈元素，但不包括那个选择器匹配到的元素
+如果没有选择器匹配到，或者没有提供参数，那么跟在后面的所有同辈元素都会被选中。这就跟用没有提供参数的 .nextAll()效果一样。
+  $("#term-2").nextUntil("dt").css("background-color","red");
+  $("#term-2").nextUntil(document,getElementById("#term-3"),"dt").css("color","red");
+
+#parent([expr]) 取得包含所有匹配元素的唯一父元素的元素集合
+  $("p").parent();
+  $("p").parent(".selected");
+
+#parents([expr]) 取得一个包含着所有匹配元素的祖先元素的元素集合，不包括根元素
+  $("span").parents()
+  $("span").parents(".selected");
+  $("span").parents("p");
+
+#parentsUntil([exp|ele][,fil])
+查找当前元素的所有的父辈元素，直到遇到匹配的那个元素为止。
+如果提供的jQuery代表了一组DOM元素，.parentsUntil()方法也能让我们找遍所有元素的祖先元素，直到遇到了一个跟提供的参数匹配的元素的时候才会停下来。这个返回的jQuery对象里包含了下面所有找到的父辈元素，但不包括那个选择器匹配到的元素。 
+  $(".item-a").parentsUntil(".level-1");
+
+#prev([expr])
+取得一个包含匹配的元素集合中每一个元素紧邻的前一个同辈元素的元素集合。
+可以用一个可选的表达式进行筛选。只有紧邻的同辈元素会被匹配到，而不是前面所有的同辈元素。
+    $("li").prev().css("background-color","#777");
+    $("p").prev(".selected");
+
+#prevAll([expr]) 查找当前元素之前所有的同辈元素
+    $("p").prevAll().css("color","#663344");
+
+#prevUntil([exp|ele][,fil])
+查找当前元素之前所有的同辈元素，直到遇到匹配的那个元素为止。
+
+如果提供的jQuery代表了一组DOM元素，.prevUntil()方法也能让我们找遍所有元素所在的DOM树，直到遇到了一个跟提供的参数匹配的元素的时候才会停下来。这个新jQuery对象里包含了前面所有找到的同辈元素，但不包括那个选择器匹配到的元素。
+
+如果没有选择器匹配到，或者没有提供参数，那么排在前面的所有同辈元素都会被选中。这就跟用没有提供参数的 .prevAll()效果一样。
+$('#term-2').prevUntil('dt').css('background-color', 'red');
+
+#siblings([expr])
+取得一个包含匹配的元素集合中每一个元素的所有唯一同辈元素的元素集合。可以用可选的表达式进行筛选。
+  $("div").siblings()
+  $("div").siblings(".selected")
+
+#add(expr|ele|html|obj[,con])
+把与表达式匹配的元素添加到jQuery对象中。这个函数可以用于连接分别与两个表达式匹配的元素结果集。返回的结果将始终以元素在HTML文档中出现的顺序来排序，而不再是简单的添加。
+  $("p").add("span")
+  $("p").add("<span>Again</span>")
+  $("p").add(document.getElementById("a"))
+
+#andSelf() 加入先前所选的加入当前元素中
+$("div").find("p").andSelf().addClass("border");//将div和内部的p都加上border类
+
+#contents() 
+查找匹配元素内部所有的子节点（包括文本节点）。如果元素是一个iframe，则查找文档内容
+  $("p").contents().not("[nodeType=1]").wrap("<b/>");//查找所有文本节点并加粗
+  $("iframe").contents().find("body")
+  .append("I'm in an iframe!");
+
+#end()
+回到最近的一个"破坏性"操作之前。即，将匹配的元素列表变为前一次的状态。
+如果之前没有破坏性操作，则返回一个空集。所谓的"破坏性"就是指任何改变所匹配的jQuery元素的操作。这包括在 Traversing 中任何返回一个jQuery对象的函数--'add', 'andSelf', 'children', 'filter', 'find', 'map', 'next', 'nextAll', 'not', 'parent', 'parents', 'prev', 'prevAll', 'siblings' and 'slice'--再加上 Manipulation 中的 'clone'。
+$("p").find("span").end()//选取所有的p元素查找并选取span子元素，然后再回过来选取P元素
+    $("p").find("span").end().css("background-color","#123433");
+
+
+###CSS
+
+#css(name|pro|[,val|fn]) 返回值:String
+访问匹配元素的样式属性。也可以设置样式
+  $("p").css("color");
+  $("p").css({ color: "#ff0011", background: "blue" });
+  $("p").css("color","red");
+
+#offset([coordinates]) 返回值:Object{top,left}
+获取匹配元素在当前视口的相对偏移;此方法只对可见元素有效。
+coordinates 一个对象，用于设置元素新的位置，必须包含top和left属性，作为元素的新坐标。这个参数也可以是一个返回一对坐标的函数，函数的第一个参数是元素的索引，第二个参数是当前的坐标
+
+
+    alert($("p.offset").offset().left);
+    alert($("p.offset").offset().top);
+    $("p,offset").offset({"top":123,"left":111});//设置为当前整个打开视口的位置（网页顶部左上角为0，0），这时加上position:relative属性并自动调节left 和top是的位置到达相对整个打开视口的位置
+  
+#position()  返回值:Object{top,left}
+获取匹配元素相对父元素的偏移。返回的对象包含两个整型属性：top 和 left。为精确计算结果，请在补白、边框和填充属性上使用像素单位。此方法只对可见元素有效。
+ alert($("p.offset").position().left);
+
+#???/scrollTop([val]) 返回值:Integer
+获取匹配元素相对滚动条顶部的偏移。
+
+#???/scrollLeft([val]) 获取匹配元素相对滚动条左侧的偏移。
+此方法对可见和隐藏元素均有效。
+
+#height([val|fn]) 返回值:Integer
+取得匹配元素当前计算的高度值（px）,可以用来获取 window 和 document 的高
+    alert($(".height").height());//火狐中获得的是内容区的高度，即设置的width值
+    $(".height").height("500px");//设置高度为500px
+    $(".height").height("200px");
+
+#width([val|fn])
+取得第一个匹配元素当前计算的宽度值（px）。
+
+#innerHeight()
+获取第一个匹配元素内部区域高度（包括补白、不包括边框）。
+此方法对可见和隐藏元素均有效。
+    alert($(".height").innerHeight());
+
+#innerWidth()
+获取第一个匹配元素内部区域宽度（包括补白、不包括边框）。
+此方法对可见和隐藏元素均有效。
+
+#outerHeight([options]) 返回值:Integer
+获取第一个匹配元素外部高度（默认包括补白和边框）。
+此方法对可见和隐藏元素均有效。
+    alert($(".height").outerHeight());
+options:Boolean 默认值:'false' 设置为 true 时，计算边距在内。
+    alert($(".height").outerHeight(true));
+
+
+###效果
+
+#show([speed,[easing],[fn]])
+显示隐藏的匹配元素。
+
+这个就是 'show( speed, [callback] )' 无动画的版本。如果选择的元素是可见的，这个方法将不会改变任何东西。无论这个元素是通过hide()方法隐藏的还是在CSS里设置了display:none;，这个方法都将有效。
+speed:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+easing:(Optional) 用来指定切换效果，默认是"swing"，可用参数"linear"
+fn:在动画完成时执行的函数，每个元素执行一次。
+
+  $("div").show();//默认600毫秒
+  $("div").show(4000);
+  $("div").show("slow","swing");
+  $("p").show("fast",function(){
+   $(this).text("Animation Done!");
+ });//动画执行完执行一次函数
+
+ $("div").show(4000,function(){
+    $(this).text("执行完动画");
+  });
+
+  $("div").show(4000,"linear",function(){
+    $(this).text("执行完动画");
+  });
+
+#hide([speed,[easing],[fn]])
+隐藏显示的元素
+这个就是 'hide( speed, [callback] )' 的无动画版。如果选择的元素是隐藏的，这个方法将不会改变任何东西。
+参数解释同上
+
+$(".show").hide(4000,"swing");
+
+#toggle([speed],[easing],[fn])
+用于绑定两个或多个事件处理器函数，以响应被选元素的轮流的 click 事件。
+如果元素是可见的，切换为隐藏的；如果元素是隐藏的，切换为可见的。
+speed: 隐藏/显示 效果的速度。默认是 "0"毫秒。可能的值：slow，normal，fast。"
+easing:(Optional) 用来指定切换效果，默认是"swing"，可用参数"linear"
+switch:Boolean,用于确定显示/隐藏的开关。如：true - 显示元素，false - 隐藏元素
+fn:在动画完成时执行的函数，每个元素执行一次。
+fn:第一数次点击时要执行的函数。
+fn2:第二数次点击时要执行的函数。
+fn3,fn4,...:更多次点击时要执行的函数。
+
+$(".toggle").toggle(4000);相当于hide或show 4000毫秒
+
+
+#slideDown([speed],[easing],[fn])
+通过高度变化（向下增大）来动态地显示所有匹配的元素，在显示完成后可选地触发一个回调函数。
+
+这个动画效果只调整元素的高度，可以使匹配的元素以“滑动”的方式显示出来。在jQuery 1.3中，上下的padding和margin也会有动画，效果更流畅。
+  $(".hide").slideDown();
+  $("p").slideDown("slow");
+  $(".hide").slideDown(1000,function(){
+    $(this).text("动画执行完");
+  });
+
+#slideUp([speed,[easing],[fn]]) 
+通过高度变化（向上减小）来动态地隐藏所有匹配的元素，在隐藏完成后可选地触发一个回调函数。
+
+这个动画效果只调整元素的高度，可以使匹配的元素以“滑动”的方式隐藏起来。在jQuery 1.3中，上下的padding和margin也会有动画，效果更流畅。
+$(".show").slideUp(1000,function(){
+    $(this).text("动画执行完");
+  });
+
+#slideToggle([speed],[easing],[fn])
+通过高度变化来切换所有匹配元素的可见性，并在切换完成后可选地触发一个回调函数。
+
+这个动画效果只调整元素的高度，可以使匹配的元素以“滑动”的方式隐藏或显示。在jQuery 1.3中，上下的padding和margin也会有动画，效果更流畅。
+
+  $(".hide").slideToggle(1000,function(){
+      $(this).text("动画执行完");
+    });//相当于slideDown
+    $(".show").slideToggle(1000,function(){
+      $(this).text("动画执行完");
+    });//相当于slideUp
+
+#fadeIn([speed],[easing],[fn])
+通过不透明度的变化来实现所有匹配元素的淡入效果，并在动画完成后可选地触发一个回调函数。
+
+这个动画只调整元素的不透明度，也就是说所有匹配的元素的高度和宽度不会发生变化。
+
+$(".hide").fadeIn(1000,function(){
+    $(this).text("动画执行完");
+  });
+
+#fadeOut([speed],[easing],[fn])
+通过不透明度的变化来实现所有匹配元素的淡出效果，并在动画完成后可选地触发一个回调函数。
+
+这个动画只调整元素的不透明度，也就是说所有匹配的元素的高度和宽度不会发生变化。
+$(".show").fadeOut(1000,function(){
+    $(this).text("动画执行完");
+  });
+ 
+#fadeTo([[speed],opacity,[easing],[fn]])
+把所有匹配元素的不透明度以渐进方式调整到指定的不透明度，并在动画完成后可选地触发一个回调函数。
+opacity:一个0至1之间表示透明度的数字。
+这个动画只调整元素的不透明度，也就是说所有匹配的元素的高度和宽度不会发生变化。
+$(".hide").fadeTo(4000,"0.3",function(){
+    $(this).text("动画执行完");
+  });
+
+#fadeToggle([speed,[easing],[fn]])
+通过不透明度的变化来开关所有匹配元素的淡入和淡出效果，并在动画完成后可选地触发一个回调函数。
+
+这个动画只调整元素的不透明度，也就是说所有匹配的元素的高度和宽度不会发生变化。
+$(".hide").fadeToggle(4000,function(){
+    $(this).text("动画执行完");
+  });
+
+
+##animate(params,[speed],[easing],[fn])
+params:一组包含作为动画属性和终值的样式属性和及其值的集合
+speed:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+easing:要使用的擦除效果的名称(需要插件支持).默认jQuery提供"linear" 和 "swing".
+fn:在动画完成时执行的函数，每个元素执行一次。
+options:动画的额外选项。如：speed - 设置动画的速度,easing - 规定要使用的 easing 函数,callback - 规定动画完成之后要执行的函数,step - 规定动画的每一步完成之后要执行的函数,queue - 布尔值。指示是否在效果队列中放置动画。如果为 false，则动画将立即开始,specialEasing - 来自 styles 参数的一个或多个 CSS 属性的映射，以及它们的对应 easing 函数
+$("#go").click(function(){
+  $("#block").animate({ 
+    width: "90%",
+    height: "100%", 
+    fontSize: "10em", 
+    borderWidth: 10
+  }, 1000 );
+});
+
+  $("#right").click(function(){
+  $(".block").animate({left: '+50px'}, "slow");
+});//以原始位置为参考
+
+$("#left").click(function(){
+  $(".block").animate({left: '-50px'}, "slow");
+});//以原始位置为参考
+
+#stop([clearQueue],[jumpToEnd])
+停止所有在指定元素上正在运行的动画。
+如果队列中有等待执行的动画(并且clearQueue没有设为true)，他们将被马上执行
+queue:用来停止动画的队列名称
+clearQueue:如果设置成true，则清空队列。可以立即结束动画。
+jumpToEnd:如果设置成true，则完成队列。可以立即完成动画。
+$("#stop").click(function(){
+  $("#box").stop();
+});
+
+$("#go").click(function(){
+  $(".block").animate({left: '+200px'}, 2000);
+});
+
+// 当点击按钮后停止动画
+$("#stop").click(function(){
+  $(".block").stop();
+});
+
+#delay(duration,[queueName])
+设置一个延时来推迟执行队列中之后的项目。
+jQuery 1.4新增。用于将队列中的函数延时执行。他既可以推迟动画队列的执行，也可以用于自定义队列。
+duration:延时时间，单位：毫秒
+queueName:队列名词，默认是Fx，动画队列。
+$('#foo').slideUp(300).delay(800).fadeIn(400);
+
+#jQuery.fx.off 返回值:Boolean
+关闭页面上所有的动画。
+把这个属性设置为true可以立即关闭所有动画(所有效果会立即执行完毕)。有些情况下可能需要这样，比如：
+你在配置比较低的电脑上使用jQuery。
+你的一些用户由于动画效果而遇到了 可访问性问题
+当把这个属性设成false之后，可以重新开启所有动画。
+
+#jQuery.fx.interval 返回值:Number
+设置动画的显示帧速。
+jQuery.fx.interval = 100;//数值越小越流畅
+
+###Ajax
+
+
+
+
+
+
+
+
+
 
 
 
