@@ -863,8 +863,331 @@ $('#foo').slideUp(300).delay(800).fadeIn(400);
 #jQuery.fx.interval 返回值:Number
 设置动画的显示帧速。
 jQuery.fx.interval = 100;//数值越小越流畅
+###事件
+
+#ready(fn)  返回值:jQuery
+当DOM载入就绪可以查询及操纵时绑定一个要执行的函数。
+$(document).ready(function(){ })等价于$(function(){ })
+
+#on(events,[selector],[data],fn)
+在选择元素上绑定一个或多个事件的事件处理函数。
+data:当一个事件被触发时要传递event.data给事件处理函数。
+$("p").on("click",function(){
+    alert($(this).text());
+  });
+
+$("p").on("click",{"foo":"haha"},myfunction);
+  function myfunction(event){
+    alert(event.data.foo);
+  }
+
+$("form").on("submit", false);//取消form的submit提交效果
+
+$("form").on("submit",function(event){
+    event.preventDefault();//也可以达到取消默认操作的效果
+});
+
+$("form").on("submit", function(event) {
+  event.stopPropagation();//禁止冒泡
+});
+/*
+  $("form").on("submit",false);
+  $(".div1").on("click",function(){
+    alert("外层div");
+  });
+  $(".div2").on("click",function(){
+    alert("内层div");
+  });
+  $(".clk").on("click",function(event){
+    alert("点击我");
+    event.stopPropagation();
+
+  });
+*/
+
+
+
+
+
+#bind(type,[data],fn)
+为每个匹配元素的特定事件绑定事件处理函数。
+data:作为event.data属性值传递给事件对象的额外数据对象
+false: 将第三个参数设置为false会使默认的动作失效。 
+
+$("p").bind("click", function(){
+  alert( $(this).text() );
+});
+
+$("button").bind({
+  click:function(){$("p").slideToggle();},
+  mouseover:function(){$("body").css("background-color","red");},  
+  mouseout:function(){$("body").css("background-color","#FFFFFF");}  
+});
+
+function handler(event) {
+  alert(event.data.foo);
+}
+$("p").bind("click", {foo: "bar"}, handler)
+$("form").bind("submit", function() { return false; })
+$("form").bind("submit", function(event){
+  event.preventDefault();
+});
+$("form").bind("submit", function(event){
+  event.stopPropagation();
+});
+
+$("p").bind({
+    "mouseover":function(){
+          $(this).css({"font-size":"30px","color":"red"});
+        },
+    "mouseout":function(){
+          $(this).css({
+            "font-size":"14px",
+            "color":"black"
+          });
+    }
+  });
+
+#one(type,[data],fn)
+为每一个匹配元素的特定事件（像click）绑定一个一次性的事件处理函数。
+在每个对象上，这个事件处理函数只会被执行一次。其他规则与bind()函数相同。
+  $("button").one({
+  click:function(){$("p").slideToggle();},
+  mouseover:function(){$("body").css("background-color","red");},  
+  mouseout:function(){$("body").css("background-color","#FFFFFF");}  
+});//仅执行一次就失效
+
+#unbind(type,[data|fn]])
+bind()的反向操作，从每一个匹配的元素中删除绑定的事件。
+  $("p").unbind("mouseout");//取消p的mouseout事件
+  $("p").unbind();//取消P的所有绑定
+
+#live(type, [data], fn)
+jQuery 给所有匹配的元素附加一个事件处理函数，即使这个元素是以后再添加进来的也有效。
+
+这个方法是基本是的 .bind() 方法的一个变体。使用 .bind() 时，选择器匹配的元素会附加一个事件处理函数，而以后再添加的元素则不会有。为此需要再使用一次 .bind() 才行。
+.live() 再点击新增的元素，他依然能够触发事件处理函数。
+$("a").live("click", function() { return false; });//阻止默认事件行为和事件冒泡
+$("a").live("click", function(event){
+  event.preventDefault();
+});//仅仅阻止默认事件行为
+
+
+#die(type, [fn])
+从元素中删除先前用.live()绑定的所有事件.(此方法与live正好完全相反。)
+如果不带参数，则所有绑定的live事件都会被移除。
+你可以解除用live注册的自定义事件。
+如果提供了type参数，那么会移除对应的live事件。
+如果也指定了第二个参数function,则只移出指定的事件处理函数。
+function aClick() {
+      $("div").show().fadeOut("slow");
+  }
+  $("#unbind").click(function () {
+      $("#theone").die("click", aClick)
+  });
+
+#delegate(selector,[type],[data],fn)
+指定的元素（属于被选元素的子元素）添加一个或多个事件处理程序，并规定当这些事件发生时运行的函数。
+$(".div1").delegate("p","mouseout",function(){
+    alert();
+  });
+
+#undelegate([sel,[type],fn])
+删除由 delegate() 方法添加的一个或多个事件处理程序。
+
+#hover([over,]out)
+over:鼠标移到元素上要触发的函数
+out:鼠标移出元素要触发的函数
+$("p").hover(
+    function(){
+          $(this).css({"font-size":"30px","color":"red"});
+        },
+    function(){
+          $(this).css({
+            "font-size":"14px",
+            "color":"black"
+          });
+    }
+  );
+
+#toggle([speed],[easing],[fn])
+用于绑定两个或多个事件处理器函数，以响应被选元素的轮流的 click 事件。
+如果元素是可见的，切换为隐藏的；如果元素是隐藏的，切换为可见的。
+$("button").click(function(){
+    $("p").toggle("slow","swing",
+    function(){
+          $(this).css({"font-size":"30px","color":"red"});
+        },
+    function(){
+          $(this).css({
+            "font-size":"14px",
+            "color":"black"
+          });
+    }
+  );
+
+#blur([[data],fn])
+触发每一个匹配元素的blur事件
+blur事件会在元素失去焦点的时候触发，既可以是鼠标行为，也可以是按tab键离开的
+$("input").blur(function(){
+    alert("hello world");
+  });
+
+
+#change([[data],fn])
+触发每个匹配元素的change事件
+这个函数会调用执行绑定到change事件的所有函数，包括浏览器的默认行为。可以通过在某个绑定的函数中返回false来防止触发浏览器的默认行为。change事件会在元素获得焦点后改变时触发。
+
+#click([[data],fn])
+触发每一个匹配元素的click事件。
+
+#dblclick([[data],fn])
+
+#error([[data],fn])
+触发每一个匹配元素的error事件。
+对于error事件，没有一个公众的标准。在大多数浏览器中，当页面的JavaScript发生错误时，window对象会触发error事件;当图像的src属性无效时，比如文件不存在或者图像数据错误时，也会触发图像对象的error事件。
+$("img").error(function(){
+    $(this).hide();//隐藏出错的图像
+  });
+
+#focus([[data],fn])
+触发每一个匹配元素的focus事件。
+可以通过鼠标点击或者键盘上的TAB导航触发。这将触发所有绑定的focus函数，注意，某些对象不支持focus方法。
+$("input").focus(function(){
+    alert("hello world");
+  });
+
+$("input").focus(function(){
+    $(this).blur();//使人无法使用文本框
+  });
+
+ $("input").focus();//页面加载自动获得焦点
+
+#focusin([data],fn)
+在每一个匹配元素的focusin事件中绑定一个处理函数。
+当一个元素，或者其内部任何一个元素获得焦点的时候会触发这个事件。这跟focus事件区别在于，他可以在父元素上检测子元素获取焦点的情况。当子元素获得焦点时父元素的focusin事件会被触发
+$("input").focusin(function(){
+    $("p").find("span").fadeOut(1000);
+  });
+
+#focusout([data],fn)
+在每一个匹配元素的focusout事件中绑定一个处理函数。
+当一个元素，或者其内部任何一个元素失去焦点的时候会触发这个事件。这跟blur事件区别在于，他可以在父元素上检测子元素失去焦点的情况。
+$("div").focusout(function(){
+    alert();
+  });
+
+
+#keydown([[data],fn])
+触发每一个匹配元素的keydown事件,keydown事件会在键盘按下时触发。
+$("input").keydown(function(){
+    alert();
+  });
+
+#keypress([[data],fn])
+触发每一个匹配元素的keypress事件
+
+#keyup([[data],fn])
+触发每一个匹配元素的keyup事件
+$("input").keydown(function(){
+    $("p").css("color","yellow");
+  }).keyup(function(){
+    $("p").css("color","#333");
+  });
+
+#mousedown([[data],fn])
+在每一个匹配元素的mousedown事件中绑定一个处理函数。
+mousedown事件在鼠标在元素上点击后会触发
+
+#mouseenter([[data],fn])
+当鼠标指针穿过元素时，会发生 mouseenter 事件。该事件大多数时候会与mouseleave 事件一起使用。
+与 mouseover 事件不同，只有在鼠标指针穿过被选元素时，才会触发 mouseenter 事件。如果鼠标指针穿过任何子元素，同样会触发 mouseover 事件。
+$(".div1").mouseenter(function(){
+    $("p").css("background-color","red");
+  });
+
+#mouseleave([[data],fn])
+当鼠标指针离开元素时，会发生 mouseleave 事件。该事件大多数时候会与mouseenter 事件一起使用。
+
+与 mouseout 事件不同，只有在鼠标指针离开被选元素时，才会触发 mouseleave 事件。如果鼠标指针离开任何子元素，同样会触发 mouseout 事件。
+$(".div1").mouseleave(function(){
+    $("p").css("background-color","red");
+  });//只有在鼠标指针离开元素时才会触发，仅仅离开子元素而未离开所选元素则不会触发
+
+#mousemove([[data],fn])
+在每一个匹配元素的mousemove事件中绑定一个处理函数。
+
+mousemove 事件通过鼠标在元素上移动来触发。事件处理函数会被传递一个变量——事件对象，其.clientX 和 .clientY 属性代表鼠标的坐标
+
+#mouseover([[data],fn])
+在每一个匹配元素的mouseover事件中绑定一个处理函数。
+
+mouseover事件会在鼠标移入对象时触发
+
+#mouseup([[data],fn])
+在每一个匹配元素的mouseup事件中绑定一个处理函数。
+
+mouseup事件会在鼠标点击对象释放时
+
+#resize([[data],fn])
+在每一个匹配元素的resize事件中绑定一个处理函数。
+
+当文档窗口改变大小时触发
+$(window).resize(function(){
+    alert("禁止改变窗口大小");
+  
+  });
+
+#scroll([[data],fn])
+在每一个匹配元素的scroll事件中绑定一个处理函数。
+
+当滚动条发生变化时触发
+
+#select([[data],fn])
+触发每一个匹配元素的select事件
+
+#submit([[data],fn])
+触发每一个匹配元素的submit事件。
+$("form").submit( function () {
+  return false;//禁止表单提交
+} );
+
+#unload([[data],fn])
+在每一个匹配元素的unload事件中绑定一个处理函数。
+$(window).unload( function () { alert("Bye now!"); } );//页面卸载时弹出警告框
+
+
+
+
+
+
+///////////不懂////////////////////
+#off(events,[selector],[fn])
+在选择元素上移除一个或多个事件的事件处理函数。off() 方法移除用.on()绑定的事件处理程序。
+trigger(type,[data])
+triggerHandler(type, [data])
+命名空间
+
+
+
+
+
+
 
 ###Ajax
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
