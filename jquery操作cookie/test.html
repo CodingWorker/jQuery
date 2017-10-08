@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta cache-control="no-cache">
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="./jquery-cookie/jquery.cookie.js"></script> 
+<script type="text/javascript">
+  $(function(){
+    //查看是否引用成功
+    //alert($.cookie);
+    /*
+    //创建cookie,并赋值
+    $.cookie('example', 'foo');
+    alert($.cookie('example'));
+    */
+   /*
+   //删除cookie
+    */
+   /*
+   $.cookie('example', 'foo');
+    alert($.cookie('example'));
+    $.cookie('example',null);
+    alert($.cookie('example'));
+    */
+   /*
+   	//设置cookie的有效期，如10天
+   	//$.cookie('example','foo',{expires:10});
+   	alert($.cookie('example'));
+   	$.cookie('example',null);
+   	*/
+   
+   //设置时间和路径
+   $.cookie('example','foo',{expires:1,path:"/"})
+
+
+
+  })
+
+</script>
+  
+</head>
+<body>
+<h1>jquery操作cookies</h1>
+<div id="result" style="width:300px;height:200px;border:1px solid #ccc;">
+	
+</div>
+<script type="text/javascript">
+$.cookie('example','foo',{expires:10,path:'/'});
+	$("#result").html($.cookie('example'));
+</script>
+</body>
+
+</html>
