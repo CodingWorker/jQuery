@@ -1,0 +1,162 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>选择器</title>
+		<script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
+		<style>
+			#box,.mybox{
+				width:200px;
+				height:100px;
+				border:1px solid red;
+			}
+
+		</style>
+	</head>
+	<body>
+		<h1>jquery api</h1>
+		<h2>选择器</h2>
+		<div id="box">
+			<div>
+				<p>box-p-1</p>
+			</div>
+			<p>box-p-2</p>
+			<p>box-p-3</p>
+		</div>
+		<form action="">
+			<input type="text">
+			<input type="text">
+		</form>
+		<div class="mybox">
+		</div>
+		<span>span</span>
+		<b>这是粗体</b>
+		<div class="another_box"></div>
+		<div class="prev-footer">
+			<a href="">box</a>
+		</div>
+		<div id='footer'></div>
+		<script>
+			$(function(){
+				//alert(1);
+				//id选择器，返回一个数组，通过索引引用具体的dom对象
+				console.log($("#box")[0]);
+
+				//标签选择器，返回一个数组，通过索引引用具体的dom对象
+				let divs=$('div');
+				console.log(divs[0]);	
+				console.log(divs[1]);	
+
+				//class选择器，返回一个数组，通过索引引用具体的dom对象
+				console.log($('.mybox')[0]);
+
+				//通配符选择器，匹配整个dom中的所有元素，返回一个数组，可以通过索引引用具体的dom对象
+				let all=$('*');
+				console.log(all);
+
+				//组合选择器，同时运行多个选择器并将结果一起返回，返回一个数组
+				let multi=$('span,.mybox,#box,b');
+				console.log(multi);
+
+				//祖先后代选择器，类似css的祖先后代样式,返回一个数组
+				let p_in_box=$('#box p');
+				console.log(p_in_box);
+				console.log(p_in_box.length);//3
+
+				//父亲儿子选择器，类似css的父亲儿子样式，返回一二数组
+				let box_p=$('#box>p');
+				console.log(box_p);
+				console.log(box_p.length);//2
+
+				//第一兄弟选择器,类似css的第一兄弟样式，返回一个数组
+				let box_next=$('#box+div');
+				console.log(box_next);
+				console.log(box_next.length);//1
+
+				//所有之后兄弟选择器，类似css的所有之后兄弟样式，返回一个数组
+				let box_siblings=$('#box ~ div');
+				console.log(box_siblings);
+				console.log(box_siblings.length);//2
+
+				//获取第一个元素，类似css的第一个元素样式，尽管是一个元素但是也返回一个数组，就像id选择器一样
+				let div_first=$('div:first');
+				console.log(div_first);
+				console.log(div_first.length);
+
+				//获取最后一个元素，类似css的最后一个元素样式，尽管是一个元素但是也返回一个数组，就像id选择器一样
+				let div_last=$('div:last');
+				console.log(div_last);
+
+				//反选选择器，即取出给定的所有，返回一个数组
+				let not_div=$(':not(div)');
+				console.log(not_div);
+				console.log(not_div.length);//13
+
+				//在选择器的基础上匹配索引值为偶数的元素，返回一个数组
+				let div_even=$('div:even');
+				console.log(div_even);
+				console.log(div_even.length);
+
+				//在选择器的基础上匹配索引值为奇数的元素，返回一个数组
+				let div_odd=$('div:odd');
+				console.log(div_odd);
+				console.log(div_odd.length);
+
+				//在选择器的基础上匹配指定索引的元素，返回一个数组，尽管是一个
+				let div_2=$('div:eq(2)');
+				console.log(div_2);
+
+				//在选择器的基础上匹配所有索引大于指定索引的元素，返回一个数组
+
+				let div_gt_1=$('div:gt(0)');
+				console.log(div_gt_1);
+
+				//在选择器的基础上匹配所有索引大于指定索引的元素，返回一个数组
+				let div_lt_1=$('div:lt(1)');
+				console.log(div_lt_1);
+
+				//匹配所有的标题元素，即h1~h6，也可以使用多选择器来实现相同的功能，返回一个数组
+				let h_all=$(':header');
+				console.log(h_all);
+				let h_all_2=$('h1,h2,h3,h4,h5,h6');
+				console.log(h_all_2);
+
+				//匹配所有在执行动画效果的元素
+				let div_not_animated=$('div:not(:animated)');
+				console.log(div_not_animated);
+
+				//匹配当前获取焦点的元素
+				let curr_focus=$('input:not(:focus)');
+				console.log(curr_focus);
+
+				//获取文档根元素，即html元素，返回一个数组
+				let root_elem=$(':root');
+				console.log(root_elem);
+
+				//匹配包含给定文本的元素，如果指定元素的子元素包含该文本，爱元素也被选择，返回一个数组
+				let div_contain_box=$('div:contains(box)');
+				console.log(div_contain_box);
+
+				//匹配所有不包含子元素或者文本的空元素
+				let empty=$(':empty');
+				console.log(empty);
+
+				//匹配含有选择器所匹配的元素的元素,返回一个数组
+				let div_has_a=$('div:has(a)');
+				console.log(div_has_a);
+
+				//匹配所有含有子元素或者文本元素的元素，返回一个数组
+				let div_parent=$('div:parent');
+				console.log(div_parent);
+
+				//匹配所有的不可见元素或者type为hidden的元素
+				let div_hidden=$('div:hidden');
+				console.log(div_hidden);
+
+				//匹配所有的可见元素
+				let div_visible=$('div:visible');
+				console.log(div_visible);
+			});
+			
+		</script>
+	</body>
+</html>
