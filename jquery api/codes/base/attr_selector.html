@@ -8,11 +8,70 @@
 		</style>
 	</head>
 	<body>
-
+		<div id="box">#box
+		<span id="span-id1">
+			span with span-id1
+		</span>
+		<span id="span-id2">
+			span with span-id2
+		</span>
+		</div>
+		<div class="mybox">.mybox</div>
+		<ul>
+			<li class="list">1</li>
+			<li class="list">2</li>
+			<li class="list">3</li>
+			<li class="list">4</li>
+		</ul>
+		<a href="file" class="pa">file</a>
+		<div>
+			<p class="p1">p1</p>
+			<p class="p2">p2</p>
+			<p class="p3">p3</p>
+			<span class="p-span"></span>
+		</div>
+		<a href="file" class="a1">file</a>
+		<a href="#">#</a>
+		<a href="http">http</a>
 		<script>
 			$(function(){
 				//alert(1);
-				
+				//匹配包含给定属性的元素,返回一个数组
+				let box_id=$('div[id]');
+				console.log(box_id[0]);
+
+				let span_ids=$('span[id]');
+				console.log(span_ids);
+				console.log(span_ids.length);//2
+				console.log($('span[id]:eq(0)')[0]);
+				console.log($('span[id]:last')[0]);
+
+				//匹配给定的属性是某个特定的值的元素
+				let li_list=$('li[class=list]');
+				console.log(li_list.length);//4
+				console.log(li_list[1]);
+
+				//匹配所有不包含指定的属性和有指定属性但是属性值不等于特定值的元素
+				let li_not_cc=$('li[class!=cc]');
+				console.log(li_not_cc);
+
+				//匹配给定的属性是以某些值开头的元素
+				let start_p=$('[class^=p]');
+				console.log(start_p);
+				let p_start_p=$('p[class^=p]:lt(2)');
+				console.log(p_start_p);
+
+				//匹配所有给定属性是以某些值结尾的元素
+				let end_1=$('[class$=1]');
+				console.log(end_1);
+
+				//匹配给定的属性包含某些值的元素
+				let has_a=$('[class*=a]');
+				console.log(has_a);
+
+				//符合属性选择器，需要多个属性条件同时成立
+				let multi_attr=$('a[class*=a][href^=file]');
+				console.log(multi_attr[0]);
 			});
 		</script>
 	</body>

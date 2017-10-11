@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>选择器</title>
+		<script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
+		<style>
+
+		</style>
+	</head>
+	<body>
+		<div id='box'>
+			<div class="header">
+				<div class="bg">
+				<h1>title</h1>
+					<div class="nav">
+						<ul>
+							<li class="tab">nav1</li>
+							<li class="tab">nav2</li>
+							<li class="tab">nav3</li>
+							<li class="tab">nav4</li>
+							<li class="tab">nav5</li>
+						</ul>	
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="sidebar">
+					<div class="sidebar-top">
+						<span>top</span>
+					</div>
+					<div class="sidebar-middle">
+						<span>middle</span>
+					</div>
+					<div class="sidebar-bottom">
+						<span>bottom</span>
+					</div>
+				</div>
+				<div class="content">content</div>
+			</div>
+			<div class="footer">
+				<div class="footer-ad">footer-ad</div>
+				<div class="footer-copyright">footer-copyright</div>
+				<div class="footer-contact">footer-contact</div>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				//alert(1);
+				//匹配作为子元素的第N个子或奇偶元素，nth-child从1开始起
+				let div_child_1=$('div:nth-child(1)');
+				console.log(div_child_1);
+				console.log(div_child_1[1]);
+				
+				let li_child_even=$('li:nth-child(even)');
+				console.log(li_child_even);
+				console.log(li_child_even[1]);
+
+				let li_child_odd=$('li:nth-child(odd)');
+				console.log(li_child_odd);
+				console.log(li_child_odd[0]);
+
+				let li_child_1=$('li:nth-child(3n+1)');
+				console.log(li_child_1);
+				console.log(li_child_1[1]);
+
+				//first-child 等价于nth-child(1)
+				let div_first_child=$('div:first-child');
+				console.log(div_first_child);
+				
+				//last-child 等价于nth-child(1)
+				let div_last_child=$('div:last-child');
+				console.log(div_last_child);
+
+				//匹配唯一子元素
+				let div_only_child=$('div:only-child');
+				console.log(div_only_child);
+				console.log(div_only_child[0]);
+				let span_only_child=$('span:only-child');
+				console.log(span_only_child);
+				console.log(span_only_child[0]);
+			});
+		</script>
+	</body>
+</html>
