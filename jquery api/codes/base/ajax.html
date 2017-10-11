@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax demo</title>
+    <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
+</head>
+<body>
+
+    <script>
+        $(function(){
+            //$.ajax返回XMLHttpRequest对象
+            let xhr=$.ajax();
+            console.log(xhr);
+    //        xhr.onreadystatechange=stateChange;
+    //        xhr.open(null);
+    //        function stateChange(){}
+
+            //beforeSend、error、dataFilter、success、complete
+            $.ajax({
+                url: 'http://localhost:63342/codes/base/css.html',
+                data: '',
+                method: 'GET',
+                beforeSend:function(xhr){
+                    console.log(xhr);
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                dataFilter:function(data,dataType){
+                    console.log(dataType);
+                    return data;
+                },
+                complete:function(xhr,str){
+                    console.log('----------complete---------');
+                    console.log(xhr);
+                    console.log(str);//success
+                },
+                error: function (xhr) {
+                    console.log('----------error---------');
+                    console.log(xhr);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
