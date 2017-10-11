@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>选择器</title>
+		<title>表单选择器</title>
 		<script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
 		<style>
 
@@ -14,16 +14,103 @@
 			<input id="input-user" type="text" value="">
 			<label for="input-password">Password</label>
 			<input id="input-password" type="password" value="">
+			<label for="male">男</label>
+			<input type="radio" name="sex" id="male">
+			<label for="female">女</label>
+			<input type="radio" name="sex" id="female">
+			<span>
+				<input type="text" value="inner-span"/>
+			</span>
+			<label for="Math">Math</label>
+			<input type="checkbox" value="Math" id="Math" name="">
+			<label for="English">English</label>
+			<input type="checkbox" value="English" id="English" name="">
+			<label for="Chinese">Chinese</label>
+			<input type="checkbox" value="Chinese" id="Chinese" name="">
+			<textarea name="intro" id="intro" cols="30" rows="10"></textarea>
+			<select name="job" id="">
+				<option value="a">ajob</option>
+				<option value="b">bjob</option>
+			</select>
+			<input type="image" id="image-1">
+			<input type="image" id="image-2">
+			<input type="reset" value="reset">
+			<input type="file" name="file">
+			<input type="text" disabled="disabled" value="disabled-input1">
+			<input type="text" disabled="disabled" value="disabled-input2">
+			<button type="submit">submit</button>
 		</form>
+			<div>
+				<ul>
+					<li><img src="#" alt="img1"></li>
+					<li><img src="#" alt="img2"></li>
+					<li><img src="#" alt="img3"></li>
+					<li><img src="#" alt="img4"></li>
+				</ul>
+			</div>
 		</div>
-		<script>
+		<script type="text/javascript">
 			$(function(){
 				//alert(1);
-				
+				//匹配所有的表单元素
+				let form_elems=$(':input');
+				console.log(form_elems.length);
+				console.log(form_elems[0]);//input
 
+				let input_in_span=$('span :input');
+				console.log(input_in_span[0]);
 
+				//匹配所有的单行文本框,即input的类型为text的
+				let text=$(':text');
+				console.log(text[1]);
 
+				//匹配所有的密码框
+				let password=$('#box :password');
+				console.log(password)
 
+				//匹配所有的button，即input且type为button的和button标签元素
+				let buttons=$('#box :button');
+				console.log(buttons[0]);
+
+				//匹配所有的submit，仅仅匹配type为submit的表单元素
+				let submits=$(':submit');
+				console.log(submits[0]);
+
+				//匹配所有的radio元素
+				let radios=$(':radio');
+				console.log(radios[0]);
+
+				//匹配所有的checkbox
+				let checkbox=$('#box :checkbox');
+				console.log(checkbox);
+
+				//匹配所有的图像域，指的是input且type为image的而非img标签
+				let images=$(':image');
+				console.log(images[0]);
+
+				//匹配所有的reset表单域
+				let resets=$(':reset');
+				console.log(resets[0]);
+
+				//匹配所有的file表单域
+				let file=$(':file');
+				console.log(file[0]);
+
+				//匹配所有enabled的input的元素
+				let enableds=$(':enabled');
+				console.log(enableds);
+
+				//匹配所有disabled的input元素
+				let disableds=$(':disabled');
+				console.log(disableds);
+
+				//匹配所有的checked元素
+				let checkeds=$(':checked');
+				console.log(checkeds[0]);
+
+				//匹配所有被选中的option元素
+				let options=$(':selected');
+				console.log(options[0]);
 			});
 		</script>
 	</body>

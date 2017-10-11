@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS demo</title>
+    <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
+    <style>
+        ul li{
+            list-style: none;
+        }
+        .fl{
+            float:left;
+        }
+
+        .fr{
+            float:right;
+        }
+
+        .li_even{
+            width:20px;
+            height:30px;
+            border:3px solid red;
+        }
+
+        .li_odd{
+            width:20px;
+            height:30px;
+            border:3px solid blue;
+        }
+
+        .margin-20{
+            margin:20px;
+        }
+
+        .btn-red{
+            background-color:red;
+        }
+
+        .btn-yellow{
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+
+        </div>
+        <div id="container">
+            <div id="sidebar"></div>
+            <div id="content">
+                <ul>
+                    <li>1</li>
+                    <li>2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                </ul>
+                <button id="toggle">toggleClass</button>
+            </div>
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script>
+        $(function(){
+            let li_even=$('#wrapper li:even');
+            let li_odd=$('#wrapper li:odd');
+            console.log(li_even);
+            li_even.addClass("li_even");
+            li_odd.addClass('li_odd');
+            li_even.addClass(function(){
+                return 'fl margin-20';
+            });
+            li_odd.addClass(function(){
+                return 'fl margin-20';
+            });
+
+            li_even.removeClass("li_even");
+    //        li_odd.removeClass();//移除所有的class
+
+            //自动添加或者删除
+            $('#toggle').click(function(event){
+    //            console.log(event);
+                $(this).toggleClass('btn-red');
+            });
+
+            $('#toggle').click(function(event){
+    //            console.log(event);
+                $(this).toggleClass(function(){
+                    return 'btn-yellow';
+                },true);//最后一个参数如果为true则只会一次变换，相当于移除了class
+            });
+        });
+    </script>
+</body>
+</html>

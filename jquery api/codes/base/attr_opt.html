@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>属性操作</title>
+    <script type="text/javascript" src="../jquery-3.2.1.min.js"></script>
+    <style>
+        #wrapper{
+            width:980px;
+            height:200px;
+            border:1px solid red;
+        }
+
+        ul{
+            border:1px solid blue;
+        }
+
+        ul li{
+            border:1px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div id="wrapper" name="bg-wrapper">
+            <img src="#" alt="背景图片" id="bg-img">
+        <div id="header">
+            <div class="nav">
+                <ul>
+                    <li style="width:120px"><a href="#1">#1</a></li>
+                    <li style="width:50px"><a href="#2">#2</a></li>
+                    <li style="width:150px"><a href="#3">#3</a></li>
+                    <li style="width:100px"><a href="#4">#4</a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        <div id="container">
+            <img src="##" alt="container 背景图片">
+            <div class="sidebar"></div>
+            <div class="content">
+                <h2>表单</h2>
+                <form action="">
+                    <input type="text" name="user"><br />
+                    <input type="password" name="password"><br />
+                    男:<input type="checkbox" name="male"><br />
+                    女:<input type="checkbox" name="female">
+                </form>
+            </div>
+        </div>
+        <div id="footer"></div>
+    </div>
+    <script>
+        $(function(){
+//            alert(1);
+            //获取元素的属性值,返回字符串类型,属性包括
+            //name/properties/key/value/fn
+            //而其他的如宽、高等为样式
+            let wrapper=$("#wrapper");
+            console.log(wrapper.attr("id"));
+            console.log(wrapper.attr("name"));
+
+            console.log(wrapper.width());//980
+            console.log(wrapper.height());//200
+
+            let bg_img=$('#bg-img');
+
+            //获取属性
+            console.log(bg_img.attr("src"));
+
+            //设置元素的属性
+            bg_img.attr('src','http://shifone.qiniudn.com/images/top-img2_708014e.jpg');
+
+            //如果有多个匹配项的话，这样只会得到第一个匹配元素的属性值，当然设置的话也只对第一个
+            //匹配的生效
+            $('li').attr('title','a list');
+
+            let li_width=$('li').width();//设置样式的时候回对所有的匹配项生效
+            console.log(li_width);
+            $('ul li').height('20px');
+
+            //使用函数设置属性
+            let ul=$('ul')[0];
+            console.log(ul);
+            $(ul).attr('alt','a ul');
+            $(ul).attr({a:'aa',b:'bb'});//传入一个对象以为多个属性设置值
+            $(ul).attr('title',function(){
+//                console.log($(this).attr('alt'));
+                return $(this).attr('alt')+" used by title";
+            });
+
+            $('img').attr('src',function(){
+                console.log(this.src);
+                return this.src;
+            });
+
+            //移除所有匹配元素中的属性
+            $(ul).removeAttr("alt");
+
+            //指定获取第一个匹配元素的指定属性值
+            console.log($('ul li').prop("title"));//a list
+            console.log($('img').prop("src"));//a list
+
+            let checkboxes=$('input[checked!=checked][type=checkbox]');
+            $(checkboxes[0]).attr('disabled','disabled');
+
+            $(checkboxes[0]).removeAttr("disabled");//要移除属性而非设置属性为其他的值，这样才能生效
+
+            console.log($('img').prop('src'));//prop中的参数是必须的，而且
+            $(checkboxes[1]).prop('disabled','disabled');
+//            $(checkboxes[1]).prop('disabled',false);//相当于是removeAttr
+//            $(checkboxes[1]).removeAttr('disabled');//这句与上句功能上是等价的
+            $(checkboxes[1]).attr('disabled',false);//这句有上面两句是等价的
+
+
+
+
+        });
+    </script>
+</body>
+</html>
